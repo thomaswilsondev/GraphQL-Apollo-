@@ -1,6 +1,8 @@
 type Query {
   # at [Product] then it called be array producer
   products: [Product]
+  # Filter products by price
+  productsByPrice(min: Float!, max: Float!): [Product]
 }
 type Product {
   # The ID of the object.

@@ -5,5 +5,8 @@ module.exports = {
       console.log("Getting the products... ");
       return productsModel.getAllProducts().products;
     },
+    productsByPrice: (_, arg) => {
+      return productsModel.getProductsByPrice(arg.min, arg.max);
+    },
   },
 };
