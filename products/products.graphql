@@ -3,6 +3,7 @@ type Query {
   products: [Product]
   # Filter products by price
   productsByPrice(min: Float!, max: Float!): [Product]
+  product(id: ID!): Product
 }
 type Product {
   # The ID of the object.
