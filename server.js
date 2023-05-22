@@ -21,6 +21,8 @@ app.use(
   graphqlHTTP({
     schema: schema,
     rootValue: root,
+    //Open graphiQL at http://localhost:3000/graphql
+    graphiql: true,
   })
 );
 
