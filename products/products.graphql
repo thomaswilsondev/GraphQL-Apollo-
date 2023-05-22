@@ -7,14 +7,17 @@ type Query {
 }
 type Mutation {
   addNewProduct(id: ID!, description: String!, price: Float!): Product
+  addNewProductReview(id: ID!, rating: Int!, comment: String): Review
 }
+
 type Product {
   # The ID of the object.
   id: ID!
   description: String!
-  review: [Review]
+  reviews: [Review]
   price: Float!
 }
+
 type Review {
   rating: Int!
   comment: String
