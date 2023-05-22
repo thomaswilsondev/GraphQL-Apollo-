@@ -1,65 +1,32 @@
 const express = require("express");
-const { buildSchema } = require("graphql");
-const { graphqlHTTP } = require("express-graphql");
+const path = require("path");
 
-const schema = buildSchema(`
-  type Query {
-    # at [Product] then it called be array producer
-    products:[Product],
-    orders:[Order],
-  }
-  type Product{
-    # The ID of the object.
-    id:ID!
-    description: String!,
-    review :[Review],
-    price: Float!,
-  }
-  type Review{
-    rating: Int!,
-    comment: String
-  }
-  # Order
-  type Order {
-    data: String!,
-    subtotal: Float!,
-    items:[OrderItem]
-  }
-  type OrderItem {
-    product: Product!,
-    quantity: Int!,
-  }
-`);
+const { graphqlHTTP } = require("express-graphql");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
+const { loadFilesSync } = require("@graphql-tools/load-files");
+
+const typesArray = loadFilesSync(path.join(__dirname, "**/*.graphql"));
+const schema = makeExecutableSchema({
+  typeDefs: typesArray,
+  resolvers: {
+    Query: {
+      products: async (parent) => {
+        console.log("Getting the products... ");
+        const product = await Promise.resolve(parent.products);
+        return product;
+      },
+      orders: async (parent) => {
+        console.log("Getting orders ...");
+        const order = await Promise.resolve(parent.orders);
+        return order;
+      },
+    },
+  },
+});
 
 const root = {
-  products: [
-    {
-      id: "redshoe",
-      description: "Red Shoe",
-      price: 42.12,
-    },
-    {
-      id: "blue Jean",
-      description: "Blue Jean",
-      price: 55.55,
-    },
-  ],
-  orders: [
-    {
-      data: "2020-05-05",
-      subtotal: 90.22,
-      items: [
-        {
-          product: {
-            id: "redshoe",
-            description: "Old Red Shoe",
-            price: 45.11,
-          },
-          quantity: 2,
-        },
-      ],
-    },
-  ],
+  products: require("./products/products.model"),
+  orders: require("./orders/orders.model"),
 };
 
 const app = express();

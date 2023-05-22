@@ -1,0 +1,15 @@
+type Query {
+  # at [Product] then it called be array producer
+  products: [Product]
+}
+type Product {
+  # The ID of the object.
+  id: ID!
+  description: String!
+  review: [Review]
+  price: Float!
+}
+type Review {
+  rating: Int!
+  comment: String
+}
